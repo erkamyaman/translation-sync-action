@@ -1,0 +1,39 @@
+name: Translation sync
+description: Open one issue listing the upstream files that changed since a translation fork last synced
+author: erkamyaman
+branding:
+  icon: refresh-cw
+  color: orange
+inputs:
+  github-token:
+    description: Token that can read the upstream repo and write issues in this repo
+    default: ${{ github.token }}
+  upstream-repo:
+    description: Upstream repository as owner/name
+    default: angular/angular
+  upstream-branch:
+    description: Upstream branch to compare against
+    default: main
+  paths:
+    description: Comma-separated path prefixes to track
+    default: adev/
+  content-paths:
+    description: Comma-separated path prefixes that count as translatable content
+    default: adev/src/content/
+  state-file:
+    description: JSON file holding the last synced upstream commit as lastSyncedSha
+    default: .github/translation-sync.json
+  issue-title:
+    description: Title of the tracking issue
+    default: Upstream changes to translate
+  issue-label:
+    description: Label that identifies the tracking issue
+    default: translation-sync
+outputs:
+  changed-files:
+    description: Number of tracked upstream files that changed
+  head-sha:
+    description: Upstream commit the report was built against
+runs:
+  using: node24
+  main: dist/index.js
